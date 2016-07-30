@@ -96,6 +96,9 @@ public class Titulo {
 	public boolean isPendente(){
 		return StatusTitulo.PENDENTE.equals(this.status);
 	}
+	public boolean isNew(){
+		return codigo == null;
+	}
 
 	@Override
 	public int hashCode() {

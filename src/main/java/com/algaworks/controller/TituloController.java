@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,14 +20,16 @@ import com.algaworks.repository.Titulos;
 
 @Controller
 @RequestMapping("/titulos")
-public class CobrancaController {
+public class TituloController {
 	
+	private static final String CADASTRO_VIEW = "CobrancaTitulo";
+
 	@Autowired
 	private Titulos titulos;
 	
 	@RequestMapping("/novo")
 	public ModelAndView novoTitulo(){
-		ModelAndView mv = new ModelAndView("CobrancaTitulo");
+		ModelAndView mv = new ModelAndView(CADASTRO_VIEW);
 		mv.addObject(new Titulo());
 		return mv;
 	}
@@ -34,9 +37,13 @@ public class CobrancaController {
 	@RequestMapping(method=RequestMethod.POST)
 	public String salvar(@Validated Titulo titulo, Errors errors, RedirectAttributes attributes) {
 		if (errors.hasErrors()) {
-			return "CobrancaTitulo";
+			return CADASTRO_VIEW;
 		}
 		titulos.save(titulo);
+		if(!titulo.isNew()) {
+			return "redirect:/titulos";
+		}
+		
 //		mv.addObject("titulo", new Titulo()); // zerar os campos do form
 		attributes.addFlashAttribute("mensagem", "Titulo salvo com sucesso!");
 		return "redirect:/titulos/novo";
@@ -47,6 +54,12 @@ public class CobrancaController {
 		List<Titulo> todosTitulos = titulos.findAll();
 		ModelAndView mv = new ModelAndView("PesquisaTitulos");
 		mv.addObject("titulos", todosTitulos);
+		return mv;
+	}
+	@RequestMapping("/{id}")
+	public ModelAndView edicao(@PathVariable("id") Titulo titulo) {
+		ModelAndView mv = new ModelAndView(CADASTRO_VIEW);
+		mv.addObject("titulo", titulo);
 		return mv;
 	}
 	

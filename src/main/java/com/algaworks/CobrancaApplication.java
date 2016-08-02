@@ -17,8 +17,8 @@ public class CobrancaApplication {
 		SpringApplication.run(CobrancaApplication.class, args);
 	}
 	
-	@Bean
-	public LocaleResolver localeResolver(){
-		return new FixedLocaleResolver(new Locale("pt", "BR"));
-	}
+//	@Bean
+//	public LocaleResolver localeResolver(){
+//		return new FixedLocaleResolver(new Locale("pt", "BR"));
+//	}
 }

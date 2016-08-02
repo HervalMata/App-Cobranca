@@ -36,17 +36,15 @@ public class TituloController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String salvar(@Validated Titulo titulo, Errors errors, RedirectAttributes attributes) {
+		String redirect = titulo.isNew() ? "redirect:/titulos/novo" : "redirect:/titulos";
 		if (errors.hasErrors()) {
 			return CADASTRO_VIEW;
 		}
 		titulos.save(titulo);
-		if(!titulo.isNew()) {
-			return "redirect:/titulos";
-		}
 		
 //		mv.addObject("titulo", new Titulo()); // zerar os campos do form
 		attributes.addFlashAttribute("mensagem", "Titulo salvo com sucesso!");
-		return "redirect:/titulos/novo";
+		return redirect;
 	}
 	
 	@RequestMapping
@@ -61,6 +59,13 @@ public class TituloController {
 		ModelAndView mv = new ModelAndView(CADASTRO_VIEW);
 		mv.addObject("titulo", titulo);
 		return mv;
+	}
+	
+	@RequestMapping(value="/{codigo}", method=RequestMethod.DELETE)
+	public String excluir(@PathVariable Long codigo, RedirectAttributes attributes) {
+		titulos.delete(codigo);
+		attributes.addFlashAttribute("mensagem", "Titulo excluído com sucesso!");
+		return "redirect:/titulos";
 	}
 	
 	@ModelAttribute("todosStatusTitulo")

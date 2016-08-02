@@ -97,7 +97,7 @@ public class Titulo {
 		return StatusTitulo.PENDENTE.equals(this.status);
 	}
 	public boolean isNew(){
-		return codigo == null;
+		return codigo == null || codigo == 0;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -36,15 +37,20 @@ public class TituloController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String salvar(@Validated Titulo titulo, Errors errors, RedirectAttributes attributes) {
-		String redirect = titulo.isNew() ? "redirect:/titulos/novo" : "redirect:/titulos";
 		if (errors.hasErrors()) {
 			return CADASTRO_VIEW;
 		}
-		titulos.save(titulo);
+		try {
+			String redirect = titulo.isNew() ? "redirect:/titulos/novo" : "redirect:/titulos";
+			titulos.save(titulo);
+			attributes.addFlashAttribute("mensagem", "Titulo salvo com sucesso!");
+			return redirect;
+		} catch (DataIntegrityViolationException e) {
+			errors.rejectValue("dataVencimento", null, "Formato de data inválido");
+			return CADASTRO_VIEW;
+		}
 		
 //		mv.addObject("titulo", new Titulo()); // zerar os campos do form
-		attributes.addFlashAttribute("mensagem", "Titulo salvo com sucesso!");
-		return redirect;
 	}
 	
 	@RequestMapping

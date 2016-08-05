@@ -22,4 +22,5 @@ $('.alert-dismissible').fadeTo(2000, 500).slideUp(500, function(){
 
 $(function() {
 	$('[rel="tooltip"]').tooltip();
+	$('.js-currency').maskMoney({decimal:',', thousands: '.', allowZero: true});
 });

@@ -3,6 +3,7 @@ package com.algaworks.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -38,6 +39,8 @@ public class Titulo {
 	@DecimalMax(value =  "99999999.99", message = "Valor não poder ser mais do que 9.999.999.99")
 	@NumberFormat(pattern="#,##0.00")
 	private BigDecimal valor;
+	
+	@Column(length=50)
 	@Enumerated(EnumType.STRING)
 	private StatusTitulo status;
 	

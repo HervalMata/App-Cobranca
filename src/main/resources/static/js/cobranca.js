@@ -28,7 +28,7 @@ $(function() {
 	$('.js-currency').maskMoney({decimal:',', thousands: '.', allowZero: true});
 	
 	
-	//atualizar status do titulo
+	//atualizar status do titulo com ajax
 	$('.js-atualizar-status').on('click', function(event) {
 		event.preventDefault();
 		

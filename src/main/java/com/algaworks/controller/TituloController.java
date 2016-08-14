@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.algaworks.model.StatusTitulo;
 import com.algaworks.model.Titulo;
-import com.algaworks.repository.Titulos;
+import com.algaworks.repository.filter.TituloFilter;
 import com.algaworks.service.CadastroTituloService;
 
 @Controller
@@ -27,15 +27,11 @@ public class TituloController {
 	private static final String CADASTRO_VIEW = "CobrancaTitulo";
 
 	@Autowired
-	private Titulos titulos;
-	
-	@Autowired
 	private CadastroTituloService cadastroTituloService;
 	
 	@RequestMapping("/novo")
-	public ModelAndView novoTitulo(){
+	public ModelAndView novoTitulo(Titulo titulo){
 		ModelAndView mv = new ModelAndView(CADASTRO_VIEW);
-		mv.addObject(new Titulo());
 		return mv;
 	}
 	
@@ -58,8 +54,8 @@ public class TituloController {
 	}
 	
 	@RequestMapping
-	public ModelAndView pesquisar(){
-		List<Titulo> titulos = this.titulos.findAll();
+	public ModelAndView pesquisar(@ModelAttribute("filtro") TituloFilter filtro){
+		List<Titulo> titulos = cadastroTituloService.filtrar(filtro);
 		ModelAndView mv = new ModelAndView("PesquisaTitulos");
 		mv.addObject("titulos", titulos);
 		return mv;
